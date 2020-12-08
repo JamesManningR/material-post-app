@@ -11,7 +11,12 @@
         {{ new Date(post.dateUpdated).toLocaleDateString() }}
       </time>
     </v-card-text>
-    <v-card-actions> </v-card-actions>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn icon @click="editMode = true">
+        <v-icon left>mdi-pencil</v-icon>
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
