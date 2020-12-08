@@ -4,10 +4,9 @@
       <h1 class="display-3 mb-2 font-weight-bold">Posts</h1>
       <section>
         <h2>Create a post</h2>
-        <form>
-          <input type="text" name="title" id="title" />
-          <textarea name="body" id="body"></textarea>
-        </form>
+        <post-edit-form isNew v-model="post">
+          <v-btn color="primary" slot="submit" type="submit"> Create </v-btn>
+        </post-edit-form>
       </section>
       <section>
         <h2>Here is a list of posts</h2>
@@ -28,7 +27,20 @@
 </template>
 
 <script>
+import PostEditForm from "@/components/posts/PostEditForm";
+
 export default {
-  name: "Home"
+  name: "Home",
+  components: {
+    PostEditForm
+  },
+  data() {
+    return {
+      post: {
+        title: "",
+        body: ""
+      }
+    };
+  }
 };
 </script>
