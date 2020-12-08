@@ -10,8 +10,14 @@
       </section>
       <section>
         <h2>Here is a list of posts</h2>
-        <ul v-for="(post, key) in orderedPosts" :key="key">
-          <post-card :postId="post.id" :post="post"></post-card>
+        <ul class="row">
+          <article
+            v-for="(post, key) in orderedPosts"
+            :key="key"
+            class="col-12 col-md-6 col-lg-4 col-xl-3"
+          >
+            <post-card :postId="post.id" :post="post"></post-card>
+          </article>
         </ul>
       </section>
     </v-container>
