@@ -21,21 +21,32 @@
     </post-edit-form>
     <v-card-actions>
       <v-spacer />
-      <v-btn icon @click="editMode = true">
-        <v-icon left>mdi-pencil</v-icon>
+      <v-btn icon @click="editMode = !editMode">
+        <v-icon v-if="!editMode">mdi-pencil</v-icon>
+        <v-icon v-else>mdi-close</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import PostEditForm from "@/components/posts/PostEditForm";
+
 export default {
+  components: {
+    PostEditForm
+  },
   props: {
     postId: String,
     post: {
       title: String,
       body: String
     }
+  },
+  data() {
+    return {
+      editMode: false
+    };
   }
 };
 </script>
