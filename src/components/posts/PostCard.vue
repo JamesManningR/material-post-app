@@ -11,7 +11,12 @@
         {{ new Date(post.dateUpdated).toLocaleDateString() }}
       </time>
     </v-card-text>
-    <v-card-actions> </v-card-actions>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn icon @click="deletePost()">
+        <v-icon> mdi-trash-can-outline </v-icon>
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -22,6 +27,19 @@ export default {
     post: {
       title: String,
       body: String
+    }
+  },
+  methods: {
+    deletePost() {
+      this.$store
+        .dispatch("post/deletePost", this.postId)
+        .catch(err => {
+          console.error(err);
+          return;
+        })
+        .then(() => {
+          this.$emit("postUpdated", true);
+        });
     }
   }
 };
