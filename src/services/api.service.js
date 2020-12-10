@@ -10,11 +10,12 @@ export default class ApiService {
   async postPost(post) {
     return axios
       .post(`${this._apiUrl}/post`, post)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
+      .catch(err => {
         throw err.response;
+      })
+      .then(res => {
+        console.log(res.data);
+        return Object.values(res.data)[0];
       });
   }
 
@@ -23,21 +24,21 @@ export default class ApiService {
   async getPosts() {
     return axios
       .get(`${this._apiUrl}/post`)
-      .then((res) => {
+      .catch(err => {
+        console.log(err);
+        throw err.response;
+      })
+      .then(res => {
         // Change format from id as key to object with id property
-        let posts = []
+        let posts = [];
         Object.keys(res.data).map(key => {
           const value = res.data[key];
           posts.push({
             id: key,
             ...value
-          })
-        })
+          });
+        });
         return posts;
-      })
-      .catch((err) => {
-        console.log(err);
-        throw err.response;
       });
   }
 
@@ -45,11 +46,11 @@ export default class ApiService {
   async getPost(id) {
     return axios
       .get(`${this._apiUrl}/post/${id}`)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
+      .catch(err => {
         throw err.response;
+      })
+      .then(res => {
+        return res.data[0];
       });
   }
 
@@ -58,15 +59,15 @@ export default class ApiService {
     const { title, body } = post;
     const updatedPost = {
       title,
-      body,
+      body
     };
     return axios
       .put(`${this._apiUrl}/post/${id}`, updatedPost)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
+      .catch(err => {
         throw err.response;
+      })
+      .then(res => {
+        return res.data[0];
       });
   }
 
@@ -74,11 +75,11 @@ export default class ApiService {
   async deletePost(id) {
     return axios
       .delete(`${this._apiUrl}/post/${id}`)
-      .then((res) => {
-        return res.data;
-      })
-      .catch((err) => {
+      .catch(err => {
         throw err.response;
+      })
+      .then(res => {
+        return res.data[0];
       });
   }
 }

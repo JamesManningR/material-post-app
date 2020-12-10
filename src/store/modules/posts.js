@@ -1,4 +1,4 @@
-import ApiService from '../../services/api.service';
+import ApiService from "../../services/api.service";
 
 const api = new ApiService(process.env.VUE_APP_API_URL);
 
@@ -6,7 +6,7 @@ export const namespaced = true;
 
 export const state = {
   posts: [],
-  post: {},
+  post: {}
 };
 
 export const mutations = {
@@ -30,66 +30,76 @@ export const mutations = {
   },
   REMOVE_POST(state, id) {
     const deletedPostIndex = state.posts.findIndex(post => post.id == id);
-    console.log(deletedPostIndex);
     state.posts.splice(deletedPostIndex, 1);
-  },
+  }
 };
 
 export const actions = {
   async createPost({ commit }, post) {
-    let createdPost
-    try {
-      createdPost = await api.postPost(post);
-    } catch (err) {
-      throw err;
-    }
-    commit("ADD_POST", createdPost);
-    commit("SET_POST", {});
+    const createdPost = await api
+      .postPost(post)
+      .catch(err => {
+        throw err;
+      })
+      .then(post => {
+        commit("ADD_POST", post);
+        commit("SET_POST", {});
+        return post;
+      });
     return createdPost;
   },
   async fetchPosts({ commit }) {
-    let posts
-    try {
-      posts = await api.getPosts();
-    } catch (err) {
-      throw err;
-    }
-    commit("SET_POSTS", posts);
-    return posts;
+    const foundPosts = await api
+      .getPosts()
+      .catch(err => {
+        throw err;
+      })
+      .then(posts => {
+        commit("SET_POSTS", posts);
+        return posts;
+      });
+    return foundPosts;
   },
   async fetchPost({ commit }, id) {
-    let posts;
-    try {
-      post = await api.getPost(id);
-    } catch (err) {
-      throw err;
-    }
-    commit("SET_POST", post);
-    return post;
+    const foundPost = await api
+      .getPost(id)
+      .catch(err => {
+        throw err;
+      })
+      .then(post => {
+        commit("SET_POST", post);
+        return post;
+      });
+    return foundPost;
   },
   resetPost({ commit }) {
     commit("RESET_POST");
   },
   async updatePost({ commit }, postInfo) {
     const { post, id } = postInfo;
-    let updatedPost
-    try {
-      updatedPost = await api.updatePost(post, id);
-    } catch (err) {
-      throw err.data.message;
-    }
-    commit("UPDATE_POST", { post, id });
-    return post;
+    const updatedPost = await api
+      .updatePost(post, id)
+      .catch(err => {
+        throw err.data.message;
+      })
+      .then(() => {
+        commit("UPDATE_POST", { post, id });
+        return post;
+      });
+    return updatedPost;
   },
   async deletePost({ commit }, postId) {
-    try {
-      await api.deletePost(postId);
-    } catch (err) {
-      throw err;
-    }
-    commit("REMOVE_POST", postId);
-    return postId;
-  },
+    const deletedPost = await api
+      .deletePost(postId)
+      .catch(err => {
+        throw err;
+      })
+      .then(() => {
+        commit("REMOVE_POST", postId);
+        return postId;
+      });
+    return deletedPost;
+  }
 };
 
 export const getters = {
@@ -99,4 +109,4 @@ export const getters = {
     });
     return sortedPosts;
   }
-}
+};
