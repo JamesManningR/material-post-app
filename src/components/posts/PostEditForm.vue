@@ -39,13 +39,13 @@ export default {
   methods: {
     createPost() {
       this.$store
-        .dispatch("post/createPost", this.updatePost)
+        .dispatch("post/createPost", this.newPost)
         .catch(err => {
           console.error(err);
           return;
         })
         .then(() => {
-          this.$emit("postCreated", this.updatePost);
+          this.$emit("postCreated", this.newPost);
         });
     }
   }
