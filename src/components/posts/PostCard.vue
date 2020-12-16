@@ -25,6 +25,9 @@
         <v-icon v-if="!editMode">mdi-pencil</v-icon>
         <v-icon v-else>mdi-close</v-icon>
       </v-btn>
+      <v-btn icon @click="deletePost()">
+        <v-icon> mdi-trash-can-outline </v-icon>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -47,6 +50,19 @@ export default {
     return {
       editMode: false
     };
+  },
+  methods: {
+    deletePost() {
+      this.$store
+        .dispatch("post/deletePost", this.postId)
+        .catch(err => {
+          console.error(err);
+          return;
+        })
+        .then(() => {
+          this.$emit("postUpdated", true);
+        });
+    }
   }
 };
 </script>
