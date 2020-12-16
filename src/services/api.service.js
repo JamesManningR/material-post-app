@@ -5,6 +5,19 @@ export default class ApiService {
     this._apiUrl = apiUrl;
   }
 
+  __formatPosts(data) {
+    // Change format from id as key to object with id property
+    let posts = [];
+    Object.keys(data).map(key => {
+      const value = data[key];
+      posts.push({
+        id: key,
+        ...value
+      });
+    });
+    return posts;
+  }
+
   // Posts ============================
   // Create ------------------------------
   async postPost(post) {
@@ -14,8 +27,7 @@ export default class ApiService {
         throw err.response;
       })
       .then(res => {
-        console.log(res.data);
-        return Object.values(res.data)[0];
+        return this.__formatPosts(res.data)[0];
       });
   }
 
@@ -29,16 +41,8 @@ export default class ApiService {
         throw err.response;
       })
       .then(res => {
-        // Change format from id as key to object with id property
-        let posts = [];
-        Object.keys(res.data).map(key => {
-          const value = res.data[key];
-          posts.push({
-            id: key,
-            ...value
-          });
-        });
-        return posts;
+        const foundPosts = this.__formatPosts(res.data);
+        return foundPosts;
       });
   }
 
@@ -50,7 +54,8 @@ export default class ApiService {
         throw err.response;
       })
       .then(res => {
-        return res.data[0];
+        const foundPost = this.__formatPosts(res.data)[0];
+        return foundPost;
       });
   }
 
@@ -67,7 +72,8 @@ export default class ApiService {
         throw err.response;
       })
       .then(res => {
-        return res.data[0];
+        const updatedPost = this.__formatPosts(res.data)[0];
+        return updatedPost;
       });
   }
 
@@ -79,7 +85,8 @@ export default class ApiService {
         throw err.response;
       })
       .then(res => {
-        return res.data[0];
+        const deletedPost = this.__formatPosts(res.data)[0];
+        return deletedPost;
       });
   }
 }
