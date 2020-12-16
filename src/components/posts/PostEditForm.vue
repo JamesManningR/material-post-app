@@ -29,7 +29,10 @@ export default {
   data() {
     return {
       newPost: this.post
-        ? this.post
+        ? {
+            title: this.post.title,
+            body: this.post.body
+          }
         : {
             title: "",
             body: ""
@@ -46,6 +49,20 @@ export default {
         })
         .then(() => {
           this.$emit("postCreated", this.newPost);
+        });
+    },
+    updatePost() {
+      this.$store
+        .dispatch("post/updatePost", {
+          id: this.postId,
+          ...this.newPost
+        })
+        .catch(err => {
+          console.error(err);
+          return;
+        })
+        .then(updatedPost => {
+          this.$emit("postUpdated", updatedPost);
         });
     }
   }

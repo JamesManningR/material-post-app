@@ -3,10 +3,23 @@
     <v-container>
       <h1 class="display-3 mb-2 font-weight-bold">Posts</h1>
       <section>
-        <h2>Create a post</h2>
-        <post-edit-form isNew>
-          <v-btn color="primary" slot="submit" type="submit"> Create </v-btn>
-        </post-edit-form>
+        <v-expansion-panels class="mb-4">
+          <v-expansion-panel>
+            <v-expansion-panel-header>Create a post</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <post-edit-form isNew>
+                <v-btn
+                  class="align-right"
+                  color="primary"
+                  slot="submit"
+                  type="submit"
+                >
+                  Create
+                </v-btn>
+              </post-edit-form>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </section>
       <section>
         <h2>Here is a list of posts</h2>

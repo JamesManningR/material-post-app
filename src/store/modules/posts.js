@@ -10,24 +10,32 @@ export const state = {
 };
 
 export const mutations = {
-  ADD_POST(state, post) {
-    state.posts.push(post);
-  },
-  SET_POSTS(state, posts) {
-    state.posts = posts;
+  // init
+  RESET_POST(state) {
+    state.post = {};
   },
   RESET_POSTS(state) {
     state.posts = {};
   },
+  // create
+  ADD_POST(state, post) {
+    state.posts.push(post);
+  },
+  // set
   SET_POST(state, post) {
     state.post = post;
   },
-  RESET_POST(state) {
-    state.post = {};
+  SET_POSTS(state, posts) {
+    state.posts = posts;
   },
-  UPDATE_POST(state, { post, id }) {
-    state.posts[id] = post;
+  // update
+  UPDATE_POST(state, updatedPost) {
+    const index = state.posts.findIndex(post => post.id === updatedPost.id);
+    if (index !== -1) {
+      state.posts.splice(index, 1, updatedPost);
+    }
   },
+  // delete
   REMOVE_POST(state, id) {
     const deletedPostIndex = state.posts.findIndex(post => post.id == id);
     state.posts.splice(deletedPostIndex, 1);
@@ -75,16 +83,17 @@ export const actions = {
   resetPost({ commit }) {
     commit("RESET_POST");
   },
-  async updatePost({ commit }, postInfo) {
-    const { post, id } = postInfo;
+  async updatePost({ commit }, post) {
+    const { title, body, id } = post;
+    const postData = { title, body };
     const updatedPost = await api
-      .updatePost(post, id)
+      .updatePost(postData, id)
       .catch(err => {
         throw err.data.message;
       })
-      .then(() => {
-        commit("UPDATE_POST", { post, id });
-        return post;
+      .then(updatedPost => {
+        commit("UPDATE_POST", updatedPost);
+        return updatedPost;
       });
     return updatedPost;
   },
