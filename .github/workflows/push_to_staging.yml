@@ -1,5 +1,6 @@
 name: Build and Deploy to Staging
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
@@ -14,6 +15,8 @@ jobs:
       - name: Setup build env
         run: npm install
       - name: Build
+        env:
+          VUE_APP_API_URL: ${{ secrets.API_URL }}
         run: npm run build
       - name: Archive Build
         uses: actions/upload-artifact@master
